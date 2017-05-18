@@ -5,8 +5,8 @@
     
     <!-- Dataset parameters -->
     
-    <param name="scene_name" value="rollingball" />
-    <param name="dataset_name" value="rollingball" />
+    <param name="scene_name" value="bar_orth_1mps_hor" />
+    <param name="dataset_name" value="bar_orth_1mps_hor" />
     
     <!-- You can optionally load a camera trajectory from a file by setting
          the key "trajectory_path". If it is not set, the camera keyframes

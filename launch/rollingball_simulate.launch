@@ -1,4 +1,5 @@
-  <launch>
+<launch>
+
   <!-- DVS simulator using a sequence of images -->
   <node name="" pkg="dvs_simulator_py" type="dvs_simulator.py" output="screen">
   
@@ -6,7 +7,7 @@
     <param name="dataset_name" value="rollingball" />
     
     <!-- DAVIS parameters -->
-    <param name="contrast_threshold" value="0.15" />
+    <param name="contrast_threshold" value="0.2" />
     
     <param name="blur_size" value="3" />
     
@@ -24,7 +25,6 @@
     <remap from="image" to="/dvs/image_raw" />
     <remap from="dvs_rendering" to="dvs_rendering" />
   </node>
-
 
   <!-- display -->
   <node name="image_view" pkg="image_view" type="image_view">

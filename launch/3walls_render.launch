@@ -1,7 +1,8 @@
 <launch>
+  
   <!-- DVS simulator using a sequence of images -->
   <node name="" pkg="dvs_simulator_py" type="render_dataset.py" output="screen">
-  
+    
     <!-- Dataset parameters -->
     
     <param name="scene_name" value="3walls" />
@@ -13,5 +14,4 @@
     <!-- <param name="trajectory_path" value="/path/to/trajectory.txt" /> -->
     
   </node>
-  
 </launch>

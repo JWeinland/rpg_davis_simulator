@@ -4,7 +4,7 @@
   <node name="" pkg="dvs_simulator_py" type="dvs_simulator.py" output="screen">
   
     <!-- Dataset parameters -->
-    <param name="dataset_name" value="3walls" />
+    <param name="dataset_name" value="bar_orth_4mps_hor" />
     
     <!-- DAVIS parameters -->
     <param name="contrast_threshold" value="0.2" />

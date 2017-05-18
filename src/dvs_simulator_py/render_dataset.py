@@ -5,13 +5,17 @@ import rospkg
 import sys
 import os.path
 import subprocess
+import getpass
 
 if __name__ == '__main__':
 
     rospy.init_node('render_dataset_node', anonymous=True)
     rospack = rospkg.RosPack()
     
-    blender_path = '/usr/bin/blender'
+    if getpass.getuser() == 'jakob':
+    	blender_path = '/usr/local/bin/blender/blender'
+    else:
+    	blender_path = '/usr/bin/blender'
     workspace_dir = rospack.get_path('dvs_simulator_py')
     dataset_dir = os.path.join(workspace_dir, 'datasets')
     dataset_name = rospy.get_param('dataset_name', 'untitled')
