@@ -10,6 +10,7 @@ import time
 import cv2
 import math
 import sys
+import config
 
 from dvs_simulator_py import dataset_utils
 from std_msgs.msg import Float32, Int16
@@ -130,7 +131,7 @@ def make_event(x, y, ts, pol):
 
 if __name__ == '__main__':
 
-    rospy.init_node('dvs_simulator_node', anonymous=True)
+    rospy.init_node(config.dvs1 + '_simulator_node', anonymous=True)
     rospack = rospkg.RosPack()
     
     package_dir = rospack.get_path('dvs_simulator_py')
@@ -169,11 +170,11 @@ if __name__ == '__main__':
     
     # Prepare publishers
     bridge = CvBridge()
-    depthmap_pub = rospy.Publisher("/dvs/depthmap", Image, queue_size=0)
-    image_pub = rospy.Publisher("/dvs/image_raw", Image, queue_size=0)
-    pose_pub = rospy.Publisher("/dvs/pose", PoseStamped, queue_size=0)
-    camera_info_pub = rospy.Publisher("/dvs/camera_info", CameraInfo, queue_size=0)
-    event_pub = rospy.Publisher("/dvs/events", EventArray, queue_size=0)
+    depthmap_pub = rospy.Publisher("/" + config.dvs2 + "/depthmap", Image, queue_size=0)
+    image_pub = rospy.Publisher("/" + config.dvs2 + "/image_raw", Image, queue_size=0)
+    pose_pub = rospy.Publisher("/" + config.dvs2 + "/pose", PoseStamped, queue_size=0)
+    camera_info_pub = rospy.Publisher("/" + config.dvs2 + "/camera_info", CameraInfo, queue_size=0)
+    event_pub = rospy.Publisher("/" + config.dvs2 + "/events", EventArray, queue_size=0)
     
     if write_to_bag:
         bag_dir = os.path.join(package_dir, 'datasets', 'rosbags')
@@ -200,10 +201,10 @@ if __name__ == '__main__':
     
     # Publish initial pose, image and depthmap
     if write_to_bag:
-        bag.write(topic='/dvs/pose', msg=make_pose_msg(positions[0], orientations[0], init_time), t=init_time)        
+        bag.write(topic='/' + config.dvs1 + '/pose', msg=make_pose_msg(positions[0], orientations[0], init_time), t=init_time)        
         
-        bag.write(topic='/dvs/contrast_threshold', msg=Float32(C), t=init_time)
-        bag.write(topic='/dvs/blur_size', msg=Int16(blur_size), t=init_time)
+        bag.write(topic='/' + config.dvs1 + '/contrast_threshold', msg=Float32(C), t=init_time)
+        bag.write(topic='/' + config.dvs1 + '/blur_size', msg=Int16(blur_size), t=init_time)
         
         img_msg = bridge.cv2_to_imgmsg(np.uint8(img * 255.0), 'mono8')
         img_msg.header.stamp = init_time
@@ -212,7 +213,7 @@ if __name__ == '__main__':
         except CvBridgeError as e:
             print(e)
                 
-        bag.write(topic='/dvs/image_raw', msg=img_msg, t=init_time)
+        bag.write(topic='/' + config.dvs1 + '/image_raw', msg=img_msg, t=init_time)
         
         z = dataset_utils.extract_depth(exr_img)
         depth_msg = bridge.cv2_to_imgmsg(z, '32FC1')
@@ -222,7 +223,7 @@ if __name__ == '__main__':
         except CvBridgeError as e:
             print(e)
             
-        bag.write(topic='/dvs/depthmap', msg=depth_msg, t=init_time)
+        bag.write(topic='/' + config.dvs1 + '/depthmap', msg=depth_msg, t=init_time)
            
     if not write_to_bag:
         # Do not start publishing events if no one is listening
@@ -245,14 +246,14 @@ if __name__ == '__main__':
             pose_pub.publish(make_pose_msg(positions[frame_id], orientations[frame_id], timestamp))
         
         if write_to_bag:
-            bag.write(topic='/dvs/pose', msg=make_pose_msg(positions[frame_id], orientations[frame_id], timestamp), t=timestamp)
+            bag.write(topic='/' + config.dvs1 + '/pose', msg=make_pose_msg(positions[frame_id], orientations[frame_id], timestamp), t=timestamp)
             
         # publish camera_info
         if camera_info_pub.get_num_connections() > 0:
             camera_info_pub.publish(camera_info_msg)
             
         if write_to_bag:
-            bag.write(topic='/dvs/camera_info', msg=camera_info_msg, t=timestamp)
+            bag.write(topic='/' + config.dvs1 + '/camera_info', msg=camera_info_msg, t=timestamp)
         
         exr_img = OpenEXR.InputFile('%s/%s' % (dataset_dir, img_paths[frame_id]))
         img = dataset_utils.extract_grayscale(exr_img)
@@ -272,7 +273,7 @@ if __name__ == '__main__':
                     print(e)
                 
                 if write_to_bag:
-                    bag.write(topic='/dvs/image_raw', msg=img_msg, t=timestamp)
+                    bag.write(topic='/' + config.dvs1 + '/image_raw', msg=img_msg, t=timestamp)
                     
             # publish depth_map
             if write_to_bag or depthmap_pub.get_num_connections() > 0:
@@ -285,7 +286,7 @@ if __name__ == '__main__':
                         print(e)
  
                 if write_to_bag:
-                    bag.write(topic='/dvs/depthmap', msg=depth_msg, t=timestamp)
+                    bag.write(topic='/' + config.dvs1 + '/depthmap', msg=depth_msg, t=timestamp)
                 
             last_pub_img_timestamp = timestamp
         
@@ -305,7 +306,7 @@ if __name__ == '__main__':
             event_pub.publish(event_array)
             
             if write_to_bag:
-                bag.write(topic='/dvs/events', msg=event_array, t=timestamp)
+                bag.write(topic='/' + config.dvs1 + '/events', msg=event_array, t=timestamp)
             
             events = []
             last_pub_event_timestamp = timestamp
