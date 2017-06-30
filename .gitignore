@@ -2,3 +2,4 @@
 *.blend1
 datasets/full_datasets/
 datasets/rosbags/
+CATKIN_IGNORE
