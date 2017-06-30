@@ -3,9 +3,9 @@
 import rosbag
 
 def mergebags():
-rbag_dir=("/home/jakob/catkin_ws/src/rpg_davis_simulator/datasets/rosbags")
-rbag_left_name=("rollingball_2mps_left-20170629-100232.bag")
-rbag_right_name=("rollingball_2mps_right-20170629-100833.bag")
+rbag_dir=("")
+rbag_left_name=("")
+rbag_right_name=("")
 
 bag1 = rosbag.Bag(rbag_dir + "/" + rbag_left_name,'r')
 bag2 = rosbag.Bag(rbag_dir + "/" + rbag_right_name,'r')
