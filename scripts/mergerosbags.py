@@ -20,7 +20,7 @@ outputfile = rbag_left_name.split("_")[0] + "_merged"+".bag"
 def mergebags():
     with rosbag.Bag(outputfile,"w") as op:
         for b in bags:
-            for topic,msg,t in bag1.read_messages(): 
+            for topic,msg,t in b.read_messages(): 
                 op.write(topic,msg,t)
 
 
