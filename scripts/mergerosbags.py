@@ -24,7 +24,6 @@ def mergebags():
         for i, b in enumerate(bags):
             for topic,msg,t in b.read_messages(): 
                 topic = topic.replace("dvs",topics[i])
-                print(topic) 
                 op.write(topic,msg,t)
 
 
